@@ -6,7 +6,7 @@ module.exports = function (mongoose, Types) {
         nome: { type: String, default: '' },
         valor: { type: Number, default: '' },
         lucro: { type: Number, default: '' },
-        resultado: { type: String, enum: ['ganhou', 'perdeu', ''], default: '' },
+        resultado: { type: String, enum: ['green', 'red', ''], default: '' },
         createdAt: Date,
     }, { collection: 'aposta' });
 
