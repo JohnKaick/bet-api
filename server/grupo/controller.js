@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
         const grupo = await Grupo.find()
         res.send(grupo)
     } catch (err) {
-        res.status(401).send({ error: 'get all caixa failed' });
+        res.status(401).send({ error: 'get all grupo failed' });
     }
 
 })
@@ -20,7 +20,7 @@ router.put('/cadastrar', async (req, res, next) => {
     const { nome } = req.body
 
     try {
-        await Grupo.findById({
+        await Grupo.create({
             nome: nome,
             createdAt: new Date()
         })

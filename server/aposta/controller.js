@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
     const fim = new Date(data.getFullYear(), data.getMonth() + 1, data.getDate(), 23, 59, 59)
 
     try {
-        const apostas = await Aposta.find({"createdAt": { "$gte": inicio, "$lt": fim }}).populate('grupo').sort({ createdAt: 1 })
+        const apostas = await Aposta.find().populate('grupo').sort({ createdAt: 1 })
         res.send(apostas)
     } catch (err) {
         res.status(401).send({ error: 'get all aposta failed' });
@@ -37,15 +37,15 @@ router.put('/cadastrar/:grupoId', async (req, res, next) => {
 
     const { grupoId } = req.params
 
-    const { nome, valor, lucro, resultado, data } = req.body
+    const { nome, valor, retorno, resultado, data } = req.body
 
     try {
         let grupo = await Grupo.findById(grupoId)
         await Aposta.create({
             grupo: grupo._id,
             nome: nome,
-            valor: valor,
-            lucro: lucro,
+            valor: valor || 0,
+            retorno: retorno || 0,
             resultado: resultado,
             createdAt: data || new Date()
         })
@@ -64,11 +64,11 @@ router.post('/resultado/:id', async (req, res, next) => {
     const { resultado } = req.body
 
     try {
-        await Aposta.update({ id: id }, {
+        await Aposta.findByIdAndUpdate(id, {
             $set: {
                 resultado: resultado
             }
-        })
+        }, { new: true })
 
         res.sendStatus(200)
     } catch (err) {
