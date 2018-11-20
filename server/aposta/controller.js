@@ -8,11 +8,11 @@ const Grupo = mongosse.model('Grupo')
 router.get('/', async (req, res, next) => {
     
     const data = new Date()
-    const inicio = new Date(data.getFullYear(), data.getMonth() + 1, data.getDate(), 0, 0, 0)
-    const fim = new Date(data.getFullYear(), data.getMonth() + 1, data.getDate(), 23, 59, 59)
+    const inicio = new Date(data.getFullYear(), data.getMonth(), data.getDate(), 0, 0, 0)
+    const fim = new Date(data.getFullYear(), data.getMonth(), data.getDate(), 23, 59, 59)
 
     try {
-        const apostas = await Aposta.find().populate('grupo').sort({ createdAt: 1 })
+        const apostas = await Aposta.find({"createdAt":{"$gte":inicio,"$lte":fim}}).populate('grupo').sort({ createdAt: 1 })
         res.send(apostas)
     } catch (err) {
         res.status(401).send({ error: 'get all aposta failed' });
@@ -75,6 +75,25 @@ router.post('/resultado/:id', async (req, res, next) => {
         res.status(401).send({ error: 'create aposta failed' });
     }
 })
+
+router.post('/filtro', async (req, res, next) => {
+
+    const { dtInicio, dtFinal } = req.body
+
+    let inicio = new Date(dtInicio)
+    inicio = new Date(inicio.getFullYear(), inicio.getMonth(), inicio.getDate(), 0, 0, 0)
+    let fim = new Date(dtFinal)
+    fim = new Date(fim.getFullYear(), fim.getMonth(), fim.getDate(), 23, 59, 59)
+
+    try {
+        const apostas = await Aposta.find({"createdAt":{"$gte":inicio,"$lte":fim}}).populate('grupo').sort({ createdAt: 1 })
+        res.send(apostas)
+    } catch (err) {
+        res.status(401).send({ error: 'get all aposta filter failed' });
+    }
+
+})
+
 
 /*
 router.get('/acumulado', async (req, res, next) => {
