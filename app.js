@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
-require('dotenv').config()
 
 const app = express();
 const serverDir = path.resolve(__dirname, 'server');
