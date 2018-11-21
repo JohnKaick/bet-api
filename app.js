@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from 'path';
 import fs from 'fs';
-import 'dotenv/config';
 
 const app = express();
 const serverDir = path.resolve(__dirname, 'server');
