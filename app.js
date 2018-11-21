@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
-
 const app = express();
 const serverDir = path.resolve(__dirname, 'server');
+
+require('dotenv').config()
 
 // Porta
 let port = process.env.NODE_ENV === 'development' 
@@ -22,8 +23,18 @@ fs.readdirSync(serverDir).forEach((diretorios) => {
 // Conexão com DB
 const uri = process.env.MONGO_URI;
 mongoose.promiseLibrary = global.Promise;
-mongoose.set('useCreateIndex', true)
-mongoose.connect(uri, { useNewUrlParser: true });
+if (process.env.NODE_ENV === 'development') {
+    mongoose.set('useCreateIndex', true)
+    mongoose.connect(uri, { useNewUrlParser: true }).then(() => {
+        console.log('Mongodb is running in localhost')
+    });
+} else {
+    mongoose.connect(uri, { useNewUrlParser: true }).then(() => {
+        console.log('Mongodb is running')
+    }, err => {
+        console.log(`Error connection mongodb: ${err}`)
+    });
+}
 
 // Config. do express
 app.use(cors());
