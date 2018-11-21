@@ -1,9 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import path from 'path';
-import fs from 'fs';
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config()
 
 const app = express();
 const serverDir = path.resolve(__dirname, 'server');
