@@ -20,7 +20,7 @@ fs.readdirSync(serverDir).forEach((diretorios) => {
 })
 
 // Conexão com DB
-const uri = process.env.MONGO_URI || 'mongodb://localhost/bet';
+const uri = process.env.MONGO_URI;
 mongoose.promiseLibrary = global.Promise;
 mongoose.set('useCreateIndex', true)
 mongoose.connect(uri, { useNewUrlParser: true });
